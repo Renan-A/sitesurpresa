@@ -1,24 +1,46 @@
-function atualizarContador() {
-  // Substitua essa data pela data real em que eles se conheceram
-  const dataInicial = new Date("2023-02-06T00:00:00");
-  const agora = new Date();
+<script>
+  function calcularDiferenca() {
+    const dataInicio = new Date("2020-02-14T00:00:00"); // << Coloque aqui a data que eles se conheceram
+    const agora = new Date();
 
-  const diferenca = agora - dataInicial;
+    let anos = agora.getFullYear() - dataInicio.getFullYear();
+    let meses = agora.getMonth() - dataInicio.getMonth();
+    let dias = agora.getDate() - dataInicio.getDate();
 
-  const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
-  const horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24);
-  const minutos = Math.floor((diferenca / (1000 * 60)) % 60);
-  const segundos = Math.floor((diferenca / 1000) % 60);
+    if (dias < 0) {
+      meses--;
+      const mesAnterior = new Date(agora.getFullYear(), agora.getMonth(), 0);
+      dias += mesAnterior.getDate();
+    }
 
-  document.getElementById("contador").innerHTML = 
-    `${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos juntos!`;
-}
+    if (meses < 0) {
+      anos--;
+      meses += 12;
+    }
 
-// Atualiza o contador a cada segundo
-setInterval(atualizarContador, 1000);
+    const diffTempo = agora - new Date(
+      agora.getFullYear(),
+      agora.getMonth(),
+      agora.getDate(),
+      0,
+      0,
+      0
+    );
+
+    const horas = Math.floor(diffTempo / (1000 * 60 * 60));
+    const minutos = Math.floor((diffTempo % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((diffTempo % (1000 * 60)) / 1000);
+
+    document.getElementById("contador").innerHTML =
+      `${anos} anos, ${meses} meses, ${dias} dias, ` +
+      `${horas}h ${minutos}min ${segundos}s`;
+  }
+
+  setInterval(calcularDiferenca, 1000);
+</script>
 
 // Chama a função assim que a página carrega
-atualizarContador();
+calcularDiferenca();
 
 
 const imagens = [
