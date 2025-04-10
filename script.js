@@ -2,37 +2,47 @@ function atualizarContador() {
   const dataInicial = new Date("2023-02-06T00:00:00");
   const agora = new Date();
 
-  // Cálculo de anos, meses e dias
   let anos = agora.getFullYear() - dataInicial.getFullYear();
   let meses = agora.getMonth() - dataInicial.getMonth();
   let dias = agora.getDate() - dataInicial.getDate();
+  let horas = agora.getHours() - dataInicial.getHours();
+  let minutos = agora.getMinutes() - dataInicial.getMinutes();
+  let segundos = agora.getSeconds() - dataInicial.getSeconds();
 
+  if (segundos < 0) {
+    segundos += 60;
+    minutos--;
+  }
+  if (minutos < 0) {
+    minutos += 60;
+    horas--;
+  }
+  if (horas < 0) {
+    horas += 24;
+    dias--;
+  }
   if (dias < 0) {
+    const ultimoMes = new Date(agora.getFullYear(), agora.getMonth(), 0);
+    dias += ultimoMes.getDate();
     meses--;
-    const ultimoDiaDoMesAnterior = new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
-    dias += ultimoDiaDoMesAnterior;
   }
-
   if (meses < 0) {
-    anos--;
     meses += 12;
+    anos--;
   }
 
-  // Cálculo de horas, minutos e segundos (apenas do dia atual)
-  const hoje = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
-  const tempoHoje = agora - hoje;
-  const horas = Math.floor(tempoHoje / (1000 * 60 * 60));
-  const minutos = Math.floor((tempoHoje / (1000 * 60)) % 60);
-  const segundos = Math.floor((tempoHoje / 1000) % 60);
-
-  document.getElementById("contador").innerHTML =
-    `${anos} anos, ${meses} meses, ${dias} dias, ` +
-    `${horas} horas, ${minutos} minutos e ${segundos} segundos juntos!`;
+  document.getElementById("contador").innerHTML = 
+    `${anos} anos, ${meses} meses, ${dias} dias<br>${horas} horas, ${minutos} minutos e ${segundos} segundos juntos!`;
 }
 
+// Atualiza o contador a cada segundo
 setInterval(atualizarContador, 1000);
+
+// Chama a função assim que a página carrega
 atualizarContador();
 
+
+// Carrossel
 const imagens = [
   "fotos/foto1.jpg",
   "fotos/foto2.jpg",
